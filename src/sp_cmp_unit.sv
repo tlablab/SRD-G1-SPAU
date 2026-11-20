@@ -39,8 +39,8 @@ module sp_cmp_unit
         b_is_nan = (b_exp == 8'hff) && (b_mant != 23'd0);
         any_nan = a_is_nan || b_is_nan;
 
-        a_is_zero = (a_exp == 8'd0);
-        b_is_zero = (b_exp == 8'd0);
+        a_is_zero = (a[30:0] == 31'd0);
+        b_is_zero = (b[30:0] == 31'd0);
         both_zero = a_is_zero && b_is_zero;
 
         mag_eq = (a[30:0] == b[30:0]);
