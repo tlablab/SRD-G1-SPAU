@@ -1,6 +1,6 @@
 /*
 /   Title: IEEE 754 Binary32 Arithmetic Unit Core
-/   Samuel Darral
+/   Author: Samuel Darrall
 /   Date: 19-NOV-2026
 */
 

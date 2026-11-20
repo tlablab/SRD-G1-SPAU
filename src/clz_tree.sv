@@ -1,6 +1,6 @@
 /*
 /   Title: Count Leading Zeros Tree
-/   Samuel Darral
+/   Author: Samuel Darrall
 /   Date: 19-NOV-2026
 */
 

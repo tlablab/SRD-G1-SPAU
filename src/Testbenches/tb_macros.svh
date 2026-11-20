@@ -1,3 +1,8 @@
+/*
+/   Title: Testbench Macros
+/   Author: Samuel Darrall
+/   Date: 20-NOV-2026
+*/
 
 `ifndef TB_MACROS_SVH
 `define TB_MACROS_SVH

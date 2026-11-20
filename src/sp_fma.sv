@@ -1,6 +1,6 @@
 /*
 /   Title: IEEE 754 Binary32 Fused Mult-Add
-/   Samuel Darral
+/   Author: Samuel Darrall
 /   Date: 19-NOV-2026
 */
 
