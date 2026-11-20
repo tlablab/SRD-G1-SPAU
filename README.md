@@ -1,12 +1,12 @@
 # SRD-SPAU
 
-A IEEE 754 Binary32 compute pipeline.
+An IEEE 754 Binary32 compute pipeline.
 
 ## Core Pipeline Operations
 
 | Opcode | Operation | Description               |
 | ------ | --------- | ------------------------- |
-| `3'd0` | `FMA`     | a × b + c                 |
+| `3'd0` | `FMA`     | a.b + c                 |
 | `3'd1` | `MIN`     | min(a, b)                 |
 | `3'd2` | `MAX`     | max(a, b)                 |
 | `3'd3` | `CMP`     | Compare A vs B            |

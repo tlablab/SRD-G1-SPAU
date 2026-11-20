@@ -15,6 +15,8 @@ module sp_cmp_unit
     output logic [31:0]   result
 );
 
+    localparam logic [31:0] QNAN = 32'h7FC0_0000;
+
     logic        a_sign, b_sign;
     logic [7:0]  a_exp, b_exp;
     logic [22:0] a_mant, b_mant;
@@ -38,7 +40,7 @@ module sp_cmp_unit
         any_nan = a_is_nan || b_is_nan;
 
         a_is_zero = (a_exp == 8'd0);
-        b_is_zero = (a_exp == 8'd0);
+        b_is_zero = (b_exp == 8'd0);
         both_zero = a_is_zero && b_is_zero;
 
         mag_eq = (a[30:0] == b[30:0]);
@@ -70,14 +72,14 @@ module sp_cmp_unit
 
         case (opcode)
             MIN: begin
-                if (a_is_nan && b_is_nan) result = 32'h7fc0_0000; // QNaN
+                if (a_is_nan && b_is_nan) result = QNAN;
                 else if (a_is_nan)        result = b;
                 else if (b_is_nan)        result = a;
                 else                      result = a_lt_b ? a : b;
             end
 
             MAX: begin
-                if (a_is_nan && b_is_nan) result = 32'h7fc0_0000; // QNaN
+                if (a_is_nan && b_is_nan) result = QNAN;
                 else if (a_is_nan)        result = b;
                 else if (b_is_nan)        result = a;
                 else                      result = a_gt_b ? a : b;
