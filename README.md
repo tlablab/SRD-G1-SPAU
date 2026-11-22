@@ -49,8 +49,8 @@ The 7 stages:
 ### F2I
 - Converts bin32 to signed-int.
 - Truncates towards zero.
-- Clamps to `0x80000000` for OOR.
-- NaN returns `0x80000000`.
+- Clamps to `0x80000000/0x7fffffff` for OOR.
+- NaN returns `0x7fffffff`.
 
 ### I2F
 - Converts signed-int to bin32.
