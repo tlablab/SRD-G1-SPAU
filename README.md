@@ -43,3 +43,15 @@ The 7 stages:
 | `S_LZC`    | Sets shift amount register           |
 | `S_SHIFT`  | Shifts result to end back at 32 bits |
 | `S_ROUND`  | Rounds according to `{G, R, S}`      |
+
+## Conversion unit
+
+### F2I
+- Converts bin32 to signed-int and vice versa.
+- Truncates towards zero.
+- Clamps to `0x80000000` for OOR.
+- NaN returns `0x80000000`.
+
+### I2F
+- Ints above 2^24 lose precision. Rounds to nearest even.
+- Zero in returns positive `0.0`.
