@@ -47,11 +47,12 @@ The 7 stages:
 ## Conversion unit
 
 ### F2I
-- Converts bin32 to signed-int and vice versa.
+- Converts bin32 to signed-int.
 - Truncates towards zero.
 - Clamps to `0x80000000` for OOR.
 - NaN returns `0x80000000`.
 
 ### I2F
+- Converts signed-int to bin32.
 - Ints above 2^24 lose precision. Rounds to nearest even.
 - Zero in returns positive `0.0`.
