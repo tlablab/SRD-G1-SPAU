@@ -38,10 +38,10 @@ module sp_cvt_unit
 
     always_comb begin
         result = '0;
-        mag_f = '0; mag_i = '0; norm = '0;
-        lz = '0; exp_mant = '0; round_up = '0;
-        exp_i = '0; mant_i = '0;
-        clamp = F2I_NAN_S;
+        mag_f  = '0; mag_i    = '0; norm     = '0;
+        lz     = '0; exp_mant = '0; round_up = '0;
+        exp_i  = '0; mant_i   = '0;
+        clamp  = F2I_NAN_S;
 
         unique case (opcode)
             CVT_F2I: begin
@@ -51,7 +51,7 @@ module sp_cvt_unit
                 else if (a_exp >= 8'd158)                result = clamp;
                 else if (a_exp < 8'd127)                 result = '0;
                 else begin
-                    mag_f = {1'b1, a_mant, 8'b0} >> (8'd158 - a_exp);
+                    mag_f  = {1'b1, a_mant, 8'b0} >> (8'd158 - a_exp);
                     result = sign ? -mag_f : mag_f;
                 end
             end
@@ -59,14 +59,14 @@ module sp_cvt_unit
             CVT_I2F: begin
                 if (op_a == '0) result = '0;
                 else begin
-                    mag_i = sign ? -op_a : op_a;
-                    lz = clz32(mag_i);
-                    norm = mag_i << lz;
+                    mag_i =    sign ? -op_a : op_a;
+                    lz =       clz32(mag_i);
+                    norm =     mag_i << lz;
                     round_up = norm[7] & ((|norm[6:0]) | norm[8]);
-                    exp_i = 8'd158 - {3'b000, lz};
-                    mant_i = norm[30:8];
+                    exp_i =    8'd158 - {3'b000, lz};
+                    mant_i =   norm[30:8];
                     exp_mant = {exp_i, mant_i} + {30'b0, round_up};
-                    result = {sign, exp_mant};
+                    result =   {sign, exp_mant};
                 end
             end
 
