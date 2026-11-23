@@ -12,15 +12,25 @@ module clz_tree_tb;
     `TIMEOUT(100ms)
     `DUMP(clz_tree_tb)
 
-    localparam int NW   = 7;
-    localparam int MAXW = 2 << (NW - 1);
+    localparam int NW   = 11;
+    localparam int MAXW = 128;
+
+    function automatic int width_of(input int g);
+        case (g)
+            7:       return 3;
+            8:       return 12;
+            9:       return 24;
+            10:      return 76;
+            default: return 2 << g;
+        endcase
+    endfunction
 
     logic [MAXW-1:0] in_bus;
     logic            zero_o [NW];
     logic [7:0]      cnt_o  [NW];
 
     for (genvar g = 0; g < NW; g++) begin : g_dut
-        localparam int W = 2 << g;
+        localparam int W = width_of(g);
         logic [$clog2(W)-1:0] cnt;
 
         clz_tree #(.WIDTH(W)) dut (
@@ -34,10 +44,6 @@ module clz_tree_tb;
 
     bit strict_zero = 0;
     int n_random    = 20000;
-
-    function automatic int width_of(input int g);
-        return 2 << g;
-    endfunction
 
     function automatic logic [MAXW-1:0] mask_of(input int w);
         return (w >= MAXW) ? '1 : ((MAXW'(1) << w) - 1);
@@ -100,7 +106,7 @@ module clz_tree_tb;
         if (!ref_zero) begin
             `CHECK_EQ(cnt_o[g], 8'(ref_cnt))
         end else if (strict_zero) begin
-            `CHECK_EQ(cnt_o[g], 8'(w - 1))
+            `CHECK_EQ(cnt_o[g], 8'(((w & (w - 1)) == 0) ? w - 1 : w))
         end
 
         if (tb_errors != errs_before)
@@ -137,8 +143,9 @@ module clz_tree_tb;
             check_clz(g, '1, 0);
 
         `TEST("upper bits outside WIDTH are ignored")
-        for (int g = 0; g < NW - 1; g++) begin
+        for (int g = 0; g < NW; g++) begin
             w = width_of(g);
+            if (w >= MAXW) continue;
             check_clz(g, ~mask_of(w),                      w);
             check_clz(g, ~mask_of(w) | MAXW'(1),           w - 1);
             check_clz(g, ~mask_of(w) | (MAXW'(1) << (w-1)), 0);
@@ -166,8 +173,9 @@ module clz_tree_tb;
         end
 
         `TEST("exhaustive: widths 2 .. 16")
-        for (int g = 0; g < NW && width_of(g) <= 16; g++) begin
+        for (int g = 0; g < NW; g++) begin
             w = width_of(g);
+            if (w > 16) continue;
             for (int x = 0; x < (1 << w); x++)
                 check_clz(g, MAXW'(x));
         end

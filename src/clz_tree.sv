@@ -11,8 +11,14 @@ module clz_tree #(
     output logic zero,
     output logic [$clog2(WIDTH)-1:0] count
 );
+    localparam int P = 1 << $clog2(WIDTH);
 
-    if (WIDTH==2) begin
+    if (WIDTH < 2) begin : g_bad
+        $error("clz_tree: WIDTH must be >= 2 (got %0d)", WIDTH);
+    end else if (P != WIDTH) begin : g_pad
+        clz_tree #(P) u_pad (.in({in, {(P-WIDTH){1'b1}}}), .zero(), .count(count));
+        assign zero = ~|in;
+    end else if (WIDTH==2) begin
         assign zero = ~|in;
         assign count = ~in[1];
     end else begin

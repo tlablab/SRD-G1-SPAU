@@ -16,7 +16,8 @@ module sp_fma (
 
     localparam logic [31:0] QNAN = 32'h7FC0_0000;
 
-    // To be replaced by clz_tree.sv when I can be bothered to make that lol
+    // replaced by clz_tree.sv
+    /*
     function automatic logic [4:0] clz24(input logic [23:0] x);
         clz24 = 5'd24;
         for (int i = 0; i < 24; i++)
@@ -28,6 +29,7 @@ module sp_fma (
         for (int i = 0; i < 76; i++)
             if (x[i]) clz76 = 7'(75 - i);
     endfunction
+    */
     // --------------------------------------------------------------------------
 
     // control
@@ -118,6 +120,9 @@ module sp_fma (
     logic [7:0]  a_exp_eff, b_exp_eff, c_exp_eff;
     logic [4:0]  a_lead_zeros, b_lead_zeros;
 
+    clz_tree #(.WIDTH(24)) clz24_0 (.in(a_sig), .zero(), .count(a_lead_zeros));
+    clz_tree #(.WIDTH(24)) clz24_1 (.in(b_sig), .zero(), .count(b_lead_zeros));
+
     assign {a_sign, a_exp, a_mant} = a_reg;
     assign {b_sign, b_exp, b_mant} = b_reg;
     assign {c_sign, c_exp, c_mant} = c_reg;
@@ -141,8 +146,8 @@ module sp_fma (
     assign b_exp_eff = (b_exp == 8'h00) ? 8'd1 : b_exp;
     assign c_exp_eff = (c_exp == 8'h00) ? 8'd1 : c_exp;
 
-    assign a_lead_zeros = clz24(a_sig);
-    assign b_lead_zeros = clz24(b_sig);
+    //assign a_lead_zeros = clz24(a_sig);
+    //assign b_lead_zeros = clz24(b_sig);
 
     logic        is_special;
     logic [31:0] special_result;
@@ -199,7 +204,8 @@ module sp_fma (
     logic signed [11:0] res_exp;
     logic signed [11:0] denorm_shift;
 
-    assign sum_lead_zeros = clz76(sum_reg);
+    clz_tree #(.WIDTH(76)) clz76 (.in(sum_reg), .zero(), .count(sum_lead_zeros));
+    //assign sum_lead_zeros = clz76(sum_reg);
     assign res_exp        = 12'(sum_exp_reg) - 12'sd99 - $signed({5'd0, sum_lead_zeros});
     assign denorm_shift   = 12'(sum_exp_reg) - 12'sd100;
 
