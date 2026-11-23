@@ -9,7 +9,7 @@ module clz_tree #(
 )(
     input logic [WIDTH-1:0] in,
     output logic zero,
-    output logic [CNT_WIDTH-1:0] count
+    output logic [$clog2(WIDTH)-1:0] count
 );
 
     if (WIDTH==2) begin
