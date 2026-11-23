@@ -20,7 +20,7 @@ module sp_cvt_unit
     function automatic logic [4:0] clz32(input logic [31:0] x);
         clz32 = 5'd0;
         for (int i = 0; i < 32; i++)
-            if (x[i]) clz32 = 5'(32 - i);
+            if (x[i]) clz32 = 5'(31 - i);
     endfunction
     // --------------------------------------------------------------------------
 

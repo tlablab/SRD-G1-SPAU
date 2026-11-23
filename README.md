@@ -55,4 +55,4 @@ The 7 stages:
 ### I2F
 - Converts signed-int to bin32.
 - Ints above 2^24 lose precision. Rounds to nearest even.
-- Zero in returns positive `0.0`.
+- Zero in returns `+0.0`.
