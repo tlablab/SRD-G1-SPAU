@@ -16,12 +16,14 @@ module sp_cvt_unit
     localparam logic [31:0] F2I_NAN_U   = 32'h7FFF_FFFF;
     localparam logic [31:0] F2I_NAN_S   = 32'h8000_0000;
 
-    // To be replaced by clz_tree.sv when I can be bothered to make that lol
+    // replaced by clz_tree.sv
+    /*
     function automatic logic [4:0] clz32(input logic [31:0] x);
         clz32 = 5'd0;
         for (int i = 0; i < 32; i++)
             if (x[i]) clz32 = 5'(31 - i);
     endfunction
+    */
     // --------------------------------------------------------------------------
 
     logic        sign;
@@ -31,10 +33,12 @@ module sp_cvt_unit
 
     logic [31:0] mag_f, mag_i, norm, clamp;
     logic [7:0] exp_i;
-    logic [4:0]  lz;
+    logic [4:0]  lz, lz_i;
     logic [30:0] exp_mant;
     logic [22:0] mant_i;
     logic        round_up;
+
+    clz_tree #(.WIDTH(32)) clz32 (.in(mag_i), .zero(), .count(lz_i));
 
     always_comb begin
         result = '0;
@@ -60,7 +64,7 @@ module sp_cvt_unit
                 if (op_a == '0) result = '0;
                 else begin
                     mag_i =    sign ? -op_a : op_a;
-                    lz =       clz32(mag_i);
+                    lz =       lz_i;
                     norm =     mag_i << lz;
                     round_up = norm[7] & ((|norm[6:0]) | norm[8]);
                     exp_i =    8'd158 - {3'b000, lz};
