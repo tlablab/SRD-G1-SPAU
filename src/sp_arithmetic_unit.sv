@@ -19,6 +19,7 @@ module sp_arithmetic_unit
     input  spau_opcodes_t  opcode,
     input  logic [2:0]     abs, neg, // flags for A,B,C respectively
     input  cmp_opcodes_t   cmp_op,
+    input  bit_opcodes_t   bit_op,
     input  logic           sat,
     output logic [31:0]    FP32_out,
     output logic [4:0]     dst_reg_out,

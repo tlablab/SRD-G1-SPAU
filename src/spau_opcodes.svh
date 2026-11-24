@@ -30,6 +30,17 @@ package spau_opcodes;
         NE = 3'd5
     } cmp_opcodes_t;
 
+    typedef enum logic [2:0] {
+        AND  = 3'd0,
+        OR   = 3'd1,
+        XOR  = 3'd2,
+        NOT  = 3'd3,
+        SHL  = 3'd4,
+        SHR  = 3'd5,
+        SRA  = 3'd6,
+        ANDN = 3'd7
+    } bit_opcodes_t;
+
 endpackage // opcodes
 
 `endif

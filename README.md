@@ -17,6 +17,9 @@ An IEEE 754 Binary32 compute pipeline.
 
 ## Comparison unit
 
+Uses cmp_op.
+Defaults to 32'd0 on improper opcode input.
+
 ### CMP_OPS
 
 | Code   | Op   |
@@ -56,3 +59,20 @@ The 7 stages:
 - Converts signed-int to bin32.
 - Ints above 2^24 lose precision. Rounds to nearest even.
 - Zero in returns `+0.0`.
+
+
+## Bitwise Operations
+
+Uses bit_op.
+Defaults to 32'd0 on improper opcode input.
+
+| Code   | Op     | Description          |
+| ------ | ------ | -------------------- |
+| `3'd0` | `AND`  | `op_a & op_b`        |
+| `3'd1` | `OR`   | `op_a \| op_b`       |
+| `3'd2` | `XOR`  | `op_a ^ op_b`        |
+| `3'd3` | `NOT`  | `~op_a`              |
+| `3'd4` | `SHL`  | `op_a << op_b[4:0]`  | 
+| `3'd5` | `SHR`  | `op_a >> op_b[4:0]`  |
+| `3'd6` | `SRA`  | `op_a >>> op_b[4:0]` |
+| `3'd7` | `ANDN` | `op_a & ~op_b`       |
